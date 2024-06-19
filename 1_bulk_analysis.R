@@ -411,6 +411,11 @@ up_colon_vs_muscle <- rownames(genes_up_colon_vs_muscle)[genes_up_colon_vs_muscl
 
 up_colon_both <- intersect(up_colon_vs_brain, up_colon_vs_muscle)
 
+filtered_up_colon_both <- up_colon_both[!grepl("^(LOC|LINC)", up_colon_both)]
+
+write.table(filtered_up_colon_both, "filtered_up_colon_both.txt", row.names = F, quote = F)
+
+
 ### Muscle
 
 genes_up_muscle_vs_colon <- decideTests(qlfMC, p.value=0.05, adjust.method = "BH", lfc=0)@.Data
@@ -452,10 +457,14 @@ filtered_results <- resultsCM[rownames(resultsCM) %in% up_colon_both, ]
 ordered_results <- filtered_results[order(filtered_results$table$logFC, decreasing = TRUE), ]
 top_200_genes_CM <- rownames(ordered_results[1:200, ])
 
+filtered_top_200_CM <- top_200_genes_CM[!grepl("^(LOC|LINC)", top_200_genes_CM)]
+filtered_top_200_CB <- top_200_genes_CB[!grepl("^(LOC|LINC)", top_200_genes_CB)]
+
 write.table(top_200_genes_CB, "top200_CB.txt", row.names = F, quote = F)
 write.table(top_200_genes_CM, "top200_CM.txt", row.names = F, quote = F)
 
-
+write.table(filtered_top_200_CB, "filt_top200_CB.txt", row.names = F, quote = F)
+write.table(filtered_top_200_CM, "filt_top200_CM.txt", row.names = F, quote = F)
 
 
 # !!! Update R to the latest version to execute the commands below
