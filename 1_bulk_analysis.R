@@ -360,6 +360,7 @@ plotMDS(logcpm, labels=y$samples$slice)
 plotMDS(logcpm, labels=y$samples$sex)
 plotMDS(logcpm, labels=rownames(y$samples)) # To have the names of the samples displayed
 
+
 # The most restrictive thresholds are 0.01 for FDR and 1 for logFC.
 # If I think that I obtained too many genes DE, I consider the first 100
 # and I look which kind of genes they are, then I look at the first 1000 and so on.
@@ -411,7 +412,7 @@ up_colon_vs_muscle <- rownames(genes_up_colon_vs_muscle)[genes_up_colon_vs_muscl
 
 up_colon_both <- intersect(up_colon_vs_brain, up_colon_vs_muscle)
 
-filtered_up_colon_both <- up_colon_both[!grepl("^(LOC|LINC)", up_colon_both)]
+filtered_up_colon_both <- up_colon_both[!grepl("^(LOC|LINC|MIR|SNORD|RPL|RPS)", up_colon_both)]
 
 write.table(filtered_up_colon_both, "filtered_up_colon_both.txt", row.names = F, quote = F)
 
@@ -460,6 +461,7 @@ top_200_genes_CM <- rownames(ordered_results[1:200, ])
 filtered_top_200_CM <- top_200_genes_CM[!grepl("^(LOC|LINC)", top_200_genes_CM)]
 filtered_top_200_CB <- top_200_genes_CB[!grepl("^(LOC|LINC)", top_200_genes_CB)]
 
+
 write.table(top_200_genes_CB, "top200_CB.txt", row.names = F, quote = F)
 write.table(top_200_genes_CM, "top200_CM.txt", row.names = F, quote = F)
 
@@ -477,3 +479,8 @@ which(rowData(rse_brain)$gene_name == "CLCN1") # 31616
 # Boxplot of the chosen gene among the 3 tissues considering all replicates
 boxplot(assays(rse_brain)$TPM[31616,],assays(rse_colon)$TPM[31616,], 
         assays(rse_muscle)$TPM[31616,], outline=F )
+
+wilcox.test( assays(rse_muscle)$TPM[31616,],assays(rse_colon)$TPM[31616,], alternative = 'greater')
+
+
+
